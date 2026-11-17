@@ -1,19 +1,14 @@
 "use client";
 
 import { Globe } from "lucide-react";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent, type ReactNode } from "react";
 import LogoMark from "./LogoMark";
-
-/**
- * SiteCheckupHero — landing hero for the main page where the user submits a
- * website URL for a health check (SEO, speed, security, accessibility).
- *
- * Font (Vazirmatn) and `dir`/`lang` are set globally in app/layout.tsx.
- */
 
 type SiteCheckupHeroProps = {
   /** Called with a normalized URL (https:// added if missing). */
   onSubmit?: (url: string) => void;
+  isLoading?: boolean;
+  children?: ReactNode;
 };
 
 function normalizeUrl(raw: string): string | null {
@@ -29,7 +24,11 @@ function normalizeUrl(raw: string): string | null {
   }
 }
 
-export default function SiteCheckupHero({ onSubmit }: SiteCheckupHeroProps) {
+export default function SiteCheckupHero({
+  onSubmit,
+  isLoading = false,
+  children,
+}: SiteCheckupHeroProps) {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const inputId = useId();
@@ -55,7 +54,6 @@ export default function SiteCheckupHero({ onSubmit }: SiteCheckupHeroProps) {
         <div className="w-full max-w-[640px] text-center">
           <div className="flex gap-2 justify-center items-center">
             <LogoMark />
-
             <p className="text-4xl font-extrabold tracking-tight text-[#0F766E] sm:text-5xl">
               داکتر سایت
             </p>
@@ -79,7 +77,6 @@ export default function SiteCheckupHero({ onSubmit }: SiteCheckupHeroProps) {
                 <label htmlFor={inputId} className="sr-only">
                   آدرس وب‌سایت
                 </label>
-
                 <input
                   id={inputId}
                   type="text"
@@ -112,9 +109,10 @@ export default function SiteCheckupHero({ onSubmit }: SiteCheckupHeroProps) {
 
               <button
                 type="submit"
-                className="h-14 shrink-0 rounded-2xl bg-[#0F766E] px-8 text-base font-semibold text-white outline-none transition duration-200 hover:bg-[#115E59] focus-visible:ring-4 focus-visible:ring-[#14B8A6]/50 active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100"
+                disabled={isLoading}
+                className="h-14 shrink-0 rounded-2xl bg-[#0F766E] px-8 text-base font-semibold text-white outline-none transition duration-200 hover:bg-[#115E59] focus-visible:ring-4 focus-visible:ring-[#14B8A6]/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none motion-reduce:active:scale-100"
               >
-                معاینه وب‌سایت
+                {isLoading ? "در حال بررسی..." : "معاینه وب‌سایت"}
               </button>
             </div>
 
@@ -126,6 +124,8 @@ export default function SiteCheckupHero({ onSubmit }: SiteCheckupHeroProps) {
               {error}
             </p>
           </form>
+
+          {children}
 
           <p className="mt-4 text-sm text-[#102A2A]/60">
             گزارش کامل سلامت وب‌سایت، به زبان دری
