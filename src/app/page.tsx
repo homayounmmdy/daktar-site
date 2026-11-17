@@ -4,7 +4,12 @@ import { useState } from "react";
 import SiteCheckupHero from "@/components/SiteCheckupHero";
 import SeoResult from "@/components/SeoResult";
 
-type CheckResult = { url: string; lang: string | null };
+type CheckResult = {
+  url: string;
+  lang: string | null;
+  title: string | null;
+  description: string | null;
+};
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,9 +28,14 @@ export default function HomePage() {
         body: JSON.stringify({ url }),
       });
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error ?? "بررسی ناموفق بود");
-      setResult({ url, lang: data.lang ?? null });
+
+      setResult({
+        url,
+        lang: data.lang ?? null,
+        title: data.title ?? null,
+        description: data.description ?? null,
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "خطای ناشناخته");
     } finally {
