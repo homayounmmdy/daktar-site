@@ -5,10 +5,12 @@ import { useId, useState, type FormEvent, type ReactNode } from "react";
 import LogoMark from "./LogoMark";
 
 type SiteCheckupHeroProps = {
-  /** Called with a normalized URL (https:// added if missing). */
   onSubmit?: (url: string) => void;
   isLoading?: boolean;
   children?: ReactNode;
+  picker?: ReactNode;
+  /** اگر false باشد، فرم ارسال نمی‌شود و دکمه غیرفعال است. */
+  hasSelection?: boolean;
 };
 
 function normalizeUrl(raw: string): string | null {
@@ -28,6 +30,8 @@ export default function SiteCheckupHero({
   onSubmit,
   isLoading = false,
   children,
+  picker,
+  hasSelection = true,
 }: SiteCheckupHeroProps) {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +40,12 @@ export default function SiteCheckupHero({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!hasSelection) {
+      setError("تست بدون هیچ گزینه اجرا نمی‌شود. حداقل یک بخش را انتخاب کنید.");
+      return;
+    }
+
     const url = normalizeUrl(value);
     if (!url) {
       setError("آدرس وب‌سایت معتبر نیست. مثال: https://example.com");
@@ -48,7 +58,7 @@ export default function SiteCheckupHero({
   return (
     <section
       aria-labelledby="checkup-title"
-      className="flex min-h-dvh flex-col bg-white text-[#102A2A] antialiased "
+      className="flex min-h-dvh flex-col bg-white text-[#102A2A] antialiased selection:bg-[#99F6E4]"
     >
       <main className="flex flex-1 items-center justify-center px-5 pb-24 sm:px-8">
         <div className="w-full max-w-[640px] text-center">
@@ -71,7 +81,16 @@ export default function SiteCheckupHero({
             آن باخبر شوی.
           </p>
 
-          <form onSubmit={handleSubmit} noValidate className="mt-9">
+          {/* انتخاب دسته‌بندی */}
+          {picker}
+
+          {!hasSelection && (
+            <p className="mt-3 text-xs text-amber-700">
+              تست بدون هیچ گزینه اجرا نمی‌شود. حداقل یکی از بخش‌ها را انتخاب کنید.
+            </p>
+          )}
+
+          <form onSubmit={handleSubmit} noValidate className="mt-6">
             <div className="flex flex-col gap-3 sm:flex-row">
               <div className="relative flex-1">
                 <label htmlFor={inputId} className="sr-only">
@@ -109,8 +128,8 @@ export default function SiteCheckupHero({
 
               <button
                 type="submit"
-                disabled={isLoading}
-                className="h-14 shrink-0 rounded-2xl bg-[#0F766E] px-8 text-base font-semibold text-white outline-none transition duration-200 hover:bg-[#115E59] focus-visible:ring-4 focus-visible:ring-[#14B8A6]/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none motion-reduce:active:scale-100"
+                disabled={isLoading || !hasSelection}
+                className="h-14 shrink-0 rounded-2xl bg-[#0F766E] px-8 text-base font-semibold text-white outline-none transition duration-200 hover:bg-[#115E59] focus-visible:ring-4 focus-visible:ring-[#14B8A6]/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#0F766E] motion-reduce:transition-none motion-reduce:active:scale-100"
               >
                 {isLoading ? "در حال بررسی..." : "معاینه وب‌سایت"}
               </button>
