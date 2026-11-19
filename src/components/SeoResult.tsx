@@ -67,7 +67,7 @@ function checkDescription(
   if (!desc) {
     return {
       status: "bad",
-      message: "تگ <meta name=\"description\"> وجود ندارد.",
+      message: 'تگ <meta name="description"> وجود ندارد.',
       badge: "—",
     };
   }
@@ -155,7 +155,7 @@ export default function SeoResult({ result, error }: SeoResultProps) {
     return (
       <div
         role="alert"
-        className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+        className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
       >
         {error}
       </div>
@@ -212,9 +212,18 @@ export default function SeoResult({ result, error }: SeoResultProps) {
           className="mt-3 flex h-1 w-full overflow-hidden rounded-full bg-[#102A2A]/[0.06]"
           aria-hidden="true"
         >
-          <div className="bg-emerald-500" style={{ width: `${(good / total) * 100}%` }} />
-          <div className="bg-amber-500" style={{ width: `${(warn / total) * 100}%` }} />
-          <div className="bg-red-500" style={{ width: `${(bad / total) * 100}%` }} />
+          <div
+            className="bg-emerald-500"
+            style={{ width: `${(good / total) * 100}%` }}
+          />
+          <div
+            className="bg-amber-500"
+            style={{ width: `${(warn / total) * 100}%` }}
+          />
+          <div
+            className="bg-red-500"
+            style={{ width: `${(bad / total) * 100}%` }}
+          />
         </div>
       </div>
 
