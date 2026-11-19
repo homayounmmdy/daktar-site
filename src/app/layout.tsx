@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html dir="rtl" lang="fa" className="h-full antialiased">
+    <html dir="rtl" lang="fa" className="h-full antialiased selection:bg-[#99F6E4]">
       <body className={`${vazirmatn.variable} ${vazirmatn.className}`}>
         {children}
       </body>

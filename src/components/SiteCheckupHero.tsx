@@ -48,7 +48,7 @@ export default function SiteCheckupHero({
   return (
     <section
       aria-labelledby="checkup-title"
-      className="flex min-h-dvh flex-col bg-white text-[#102A2A] antialiased selection:bg-[#99F6E4]"
+      className="flex min-h-dvh flex-col bg-white text-[#102A2A] antialiased "
     >
       <main className="flex flex-1 items-center justify-center px-5 pb-24 sm:px-8">
         <div className="w-full max-w-[640px] text-center">
